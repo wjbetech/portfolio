@@ -2,9 +2,8 @@ import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <div className="h-screen w-screen bg-accent">
+    <div className="h-screen w-screen bg-content">
       <Navbar />
-      Hello World!
     </div>
   );
 }

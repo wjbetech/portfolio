@@ -1,21 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mozilla+Headline:wght@400;700&display=swap");
 @import "tailwindcss";
 /* stylelint-disable-next-line at-rule-no-unknown */
-@import "tailwindcss";
 @plugin "daisyui" {
-  themes: light --default, cupcake;
+  themes: light --default, retro;
 }
 
-@import url("https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;700&display=swap");
-
 :root {
-  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  font-size: 16px;
+  font-size: 18px;
 
   color-scheme: light;
-  color: #222;
-  background-color: #fff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -41,4 +37,24 @@ h5,
 h6,
 .font-mono {
   font-family: "VT323", monospace;
+}
+
+body,
+p,
+a,
+li,
+ul,
+ol,
+span,
+div,
+input,
+textarea,
+button {
+  font-family: "Mozilla Headline", system-ui, sans-serif;
+}
+
+#title {
+  font-family: "VT323", monospace;
+  font-size: 2rem;
+  font-weight: 700;
 }
