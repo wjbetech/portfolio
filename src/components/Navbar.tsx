@@ -3,7 +3,7 @@ export default function Navbar() {
     <nav className="navbar bg-content text-secondary-content px-4 w-full fixed top-0 left-0 z-50">
       <div className="flex-1">
         <a className="btn btn-ghost text-2xl tracking-widest" id="title" href="#home">
-          Will's Portfolio
+          wjbetech
         </a>
       </div>
       <div className="flex-none">

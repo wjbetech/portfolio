@@ -15,7 +15,7 @@ const Hero: React.FC = () => (
             alt="William East profile"
             className="rounded-full w-40 h-40 mb-4 border-4 border-primary ml-auto"
           />
-          <h1 className="text-5xl font-bold mb-2">William East</h1>
+          <h1 className="text-5xl text-secondary-content font-bold mb-2">William East</h1>
           <p className="text-xl font-semibold mb-2">Full-stack Developer</p>
           <p className="text-xl mb-4">Native to UK - living in Seoul, Korea</p>
         </div>
