@@ -1,0 +1,44 @@
+@import "tailwindcss";
+/* stylelint-disable-next-line at-rule-no-unknown */
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, cupcake;
+}
+
+@import url("https://fonts.googleapis.com/css2?family=VT323&family=Inter:wght@400;700&display=swap");
+
+:root {
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 16px;
+
+  color-scheme: light;
+  color: #222;
+  background-color: #fff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+}
+
+/* Use VT323 for headings and .font-mono utility */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-mono {
+  font-family: "VT323", monospace;
+}
