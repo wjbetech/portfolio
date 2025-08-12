@@ -52,15 +52,35 @@ function getColorClass(idx: number, skill: string) {
 
 function SkillGlobe() {
   const globeRadius = 220;
-  // Generate random offsets for each skill on every mount
-  const randomOffsets = React.useMemo(
-    () =>
-      skills.map(() => ({
-        phi: (Math.random() - 0.5) * 0.7, // range ~[-0.35, 0.35]
-        theta: (Math.random() - 0.5) * 1.2 // range ~[-0.6, 0.6]
-      })),
-    []
-  );
+  // Generate random offsets for each skill on every mount, avoiding overlap
+  const minDistance = 0.25; // minimum allowed distance between nodes (in radians)
+  const maxTries = 30;
+  const randomOffsets = React.useMemo(() => {
+    const placed: { phi: number; theta: number }[] = [];
+    return skills.map(() => {
+      let tries = 0;
+      let phi: number = 0;
+      let theta: number = 0;
+      let ok = false;
+      while (!ok && tries < maxTries) {
+        phi = (Math.random() - 0.5) * 0.7;
+        theta = (Math.random() - 0.5) * 1.2;
+        ok = true;
+        for (const prev of placed) {
+          const dPhi = phi - prev.phi;
+          const dTheta = theta - prev.theta;
+          const dist = Math.sqrt(dPhi * dPhi + dTheta * dTheta);
+          if (dist < minDistance) {
+            ok = false;
+            break;
+          }
+        }
+        tries++;
+      }
+      placed.push({ phi, theta });
+      return { phi, theta };
+    });
+  }, []);
   return (
     <Canvas
       style={{ width: 700, height: 700, background: "transparent" }}
@@ -88,8 +108,8 @@ function SkillGlobe() {
         {skills.map((skill, i) => {
           const basePhi = Math.acos(-1 + (2 * i) / skills.length);
           const baseTheta = Math.sqrt(skills.length * Math.PI) * basePhi;
-          const phiRand = basePhi + randomOffsets[i].phi;
-          const thetaRand = baseTheta + randomOffsets[i].theta;
+          const phiRand = basePhi + (randomOffsets[i]?.phi ?? 0);
+          const thetaRand = baseTheta + (randomOffsets[i]?.theta ?? 0);
           const r = globeRadius;
           const x = r * Math.cos(thetaRand) * Math.sin(phiRand);
           const y = r * Math.sin(thetaRand) * Math.sin(phiRand);
