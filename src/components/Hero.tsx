@@ -23,7 +23,18 @@ const Hero: React.FC = () => (
       <div className="flex flex-col items-center justify-center w-3/5 h-full pl-8">
         <SkillGlobe />
       </div>
-      <button className="btn btn-primary btn-lg absolute left-1/2 -translate-x-1/2 bottom-8">See My Work ↓</button>
+      {/* Scroll down indicator */}
+      <div
+        className="absolute left-1/2 -translate-x-1/2 bottom-8 flex flex-col items-center select-none cursor-pointer z-10"
+        onClick={() => {
+          const el = document.getElementById("projects");
+          if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+          }
+        }}>
+        <span className="animate-bounce text-4xl text-primary drop-shadow-lg">↓</span>
+        <span className="text-xs mt-1 text-primary-content opacity-70">Scroll</span>
+      </div>
     </section>
   </>
 );
