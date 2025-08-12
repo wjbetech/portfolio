@@ -5,15 +5,15 @@ import { Html, OrbitControls } from "@react-three/drei";
 
 const skills = [
   "TypeScript",
-  "React",
   "Three.js",
   "Tailwind",
   "DaisyUI",
-  "Framer Motion",
   "Node.js",
-  "Vite",
-  "HTML",
-  "CSS"
+  "GitHub",
+  "Next.js",
+  "Figma",
+  "PostgreSQL",
+  "Express"
 ];
 
 function RotatingGlobe({ children }: { children: React.ReactNode }) {
@@ -37,15 +37,35 @@ const colorClasses = [
   "bg-error text-error-content border-error"
 ];
 
-function getColorClass(idx: number) {
-  // Deterministic but "random" for each skill
-  return colorClasses[idx % colorClasses.length];
+// Use a seeded random for reproducibility (same order every render)
+function seededRandom(seed: number) {
+  const x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
+
+function getColorClass(idx: number, skill: string) {
+  // Use skill name and index to generate a pseudo-random color
+  const hash = skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
+  const randIdx = Math.floor(seededRandom(hash) * colorClasses.length);
+  return colorClasses[randIdx];
 }
 
 function SkillGlobe() {
   const globeRadius = 220;
+  // Generate random offsets for each skill on every mount
+  const randomOffsets = React.useMemo(
+    () =>
+      skills.map(() => ({
+        phi: (Math.random() - 0.5) * 0.7, // range ~[-0.35, 0.35]
+        theta: (Math.random() - 0.5) * 1.2 // range ~[-0.6, 0.6]
+      })),
+    []
+  );
   return (
-    <Canvas style={{ width: 700, height: 700 }} camera={{ position: [0, 0, 700], fov: 50 }}>
+    <Canvas
+      style={{ width: 700, height: 700, background: "transparent" }}
+      camera={{ position: [0, 0, 700], fov: 50 }}
+      gl={{ preserveDrawingBuffer: true, alpha: true }}>
       <ambientLight intensity={0.7} />
       <directionalLight position={[5, 5, 5]} intensity={0.7} />
       <OrbitControls
@@ -66,22 +86,23 @@ function SkillGlobe() {
         </mesh>
         {/* Skill spheres distributed on globe */}
         {skills.map((skill, i) => {
-          // Distribute points on a sphere using spherical coordinates
-          const phi = Math.acos(-1 + (2 * i) / skills.length);
-          const theta = Math.sqrt(skills.length * Math.PI) * phi;
+          const basePhi = Math.acos(-1 + (2 * i) / skills.length);
+          const baseTheta = Math.sqrt(skills.length * Math.PI) * basePhi;
+          const phiRand = basePhi + randomOffsets[i].phi;
+          const thetaRand = baseTheta + randomOffsets[i].theta;
           const r = globeRadius;
-          const x = r * Math.cos(theta) * Math.sin(phi);
-          const y = r * Math.sin(theta) * Math.sin(phi);
-          const z = r * Math.cos(phi);
+          const x = r * Math.cos(thetaRand) * Math.sin(phiRand);
+          const y = r * Math.sin(thetaRand) * Math.sin(phiRand);
+          const z = r * Math.cos(phiRand);
           return (
             <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "none" }}>
               <span
-                className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased ${getColorClass(
-                  i
+                className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased flex items-center justify-center text-center ${getColorClass(
+                  i,
+                  skill
                 )}`}
                 style={{
                   fontSize: 16,
-                  display: "inline-block",
                   userSelect: "none",
                   fontFamily:
                     'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
@@ -98,4 +119,10 @@ function SkillGlobe() {
   );
 }
 
-export default SkillGlobe;
+export default function App() {
+  return (
+    <div className="flex items-center justify-center min-h-screen">
+      <SkillGlobe />
+    </div>
+  );
+}
