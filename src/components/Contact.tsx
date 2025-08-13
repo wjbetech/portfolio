@@ -6,23 +6,23 @@ const Contact: React.FC = () => (
     <h2 className="text-4xl font-bold mb-8">Get in Touch</h2>
     <form className="w-full max-w-md flex flex-col gap-4">
       <input
-        className="input input-bordered"
+        className="input input-bordered w-full"
         type="text"
         placeholder="Your Name"
         required
       />
       <input
-        className="input input-bordered"
+        className="input input-bordered w-full"
         type="email"
         placeholder="Your Email"
         required
       />
       <textarea
-        className="textarea textarea-bordered"
+        className="textarea textarea-bordered w-full"
         placeholder="Your Message"
         required
       />
-      <button className="btn btn-primary btn-block" type="submit">
+  <button className="btn btn-primary btn-block" type="submit">
         Send
       </button>
     </form>
