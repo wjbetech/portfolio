@@ -13,7 +13,7 @@ const skills = [
   "Next.js",
   "Figma",
   "PostgreSQL",
-  "Express"
+  "Express",
 ];
 
 function RotatingGlobe({ children }: { children: React.ReactNode }) {
@@ -34,7 +34,7 @@ const colorClasses = [
   "bg-info text-info-content border-info",
   "bg-success text-success-content border-success",
   "bg-warning text-warning-content border-warning",
-  "bg-error text-error-content border-error"
+  "bg-error text-error-content border-error",
 ];
 
 // Use a seeded random for reproducibility (same order every render)
@@ -45,7 +45,8 @@ function seededRandom(seed: number) {
 
 function getColorClass(idx: number, skill: string) {
   // Use skill name and index to generate a pseudo-random color
-  const hash = skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
+  const hash =
+    skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
   const randIdx = Math.floor(seededRandom(hash) * colorClasses.length);
   return colorClasses[randIdx];
 }
@@ -82,60 +83,99 @@ function SkillGlobe() {
     });
   }, []);
   return (
-    <Canvas
-      style={{ width: 700, height: 700, background: "transparent" }}
-      camera={{ position: [0, 0, 700], fov: 50 }}
-      gl={{ preserveDrawingBuffer: true, alpha: true }}>
-      <ambientLight intensity={0.7} />
-      <directionalLight position={[5, 5, 5]} intensity={0.7} />
-      <OrbitControls
-        enablePan={false}
-        enableZoom={false}
-        onStart={() => {
-          document.querySelector("canvas")?.classList.add("dragging");
+    <div style={{ position: "relative", width: 700, height: 700 }}>
+      {/* Low opacity label behind the globe */}
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          zIndex: 0,
+          fontSize: "5rem",
+          fontWeight: 700,
+          color: "#000",
+          opacity: 0.08,
+          pointerEvents: "none",
+          whiteSpace: "nowrap",
+          fontFamily: "VT323, monospace",
+          letterSpacing: "0.1em",
+          textAlign: "center",
+          userSelect: "none",
         }}
-        onEnd={() => {
-          document.querySelector("canvas")?.classList.remove("dragging");
+      >
+        My Skills
+      </div>
+      <Canvas
+        style={{
+          width: 700,
+          height: 700,
+          background: "transparent",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 1,
         }}
-      />
-      <RotatingGlobe>
-        {/* Invisible globe mesh for reference only */}
-        <mesh>
-          <sphereGeometry args={[globeRadius, 32, 32]} />
-          <meshStandardMaterial color="#6C63FF" opacity={0} transparent />
-        </mesh>
-        {/* Skill spheres distributed on globe */}
-        {skills.map((skill, i) => {
-          const basePhi = Math.acos(-1 + (2 * i) / skills.length);
-          const baseTheta = Math.sqrt(skills.length * Math.PI) * basePhi;
-          const phiRand = basePhi + (randomOffsets[i]?.phi ?? 0);
-          const thetaRand = baseTheta + (randomOffsets[i]?.theta ?? 0);
-          const r = globeRadius;
-          const x = r * Math.cos(thetaRand) * Math.sin(phiRand);
-          const y = r * Math.sin(thetaRand) * Math.sin(phiRand);
-          const z = r * Math.cos(phiRand);
-          return (
-            <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "none" }}>
-              <span
-                className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased flex items-center justify-center text-center ${getColorClass(
-                  i,
-                  skill
-                )}`}
-                style={{
-                  fontSize: 16,
-                  userSelect: "none",
-                  fontFamily:
-                    'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-                  WebkitFontSmoothing: "antialiased",
-                  MozOsxFontSmoothing: "grayscale"
-                }}>
-                {skill}
-              </span>
-            </Html>
-          );
-        })}
-      </RotatingGlobe>
-    </Canvas>
+        camera={{ position: [0, 0, 700], fov: 50 }}
+        gl={{ preserveDrawingBuffer: true, alpha: true }}
+      >
+        <ambientLight intensity={0.7} />
+        <directionalLight position={[5, 5, 5]} intensity={0.7} />
+        <OrbitControls
+          enablePan={false}
+          enableZoom={false}
+          onStart={() => {
+            document.querySelector("canvas")?.classList.add("dragging");
+          }}
+          onEnd={() => {
+            document.querySelector("canvas")?.classList.remove("dragging");
+          }}
+        />
+        <RotatingGlobe>
+          {/* Invisible globe mesh for reference only */}
+          <mesh>
+            <sphereGeometry args={[globeRadius, 32, 32]} />
+            <meshStandardMaterial color="#6C63FF" opacity={0} transparent />
+          </mesh>
+          {/* Skill spheres distributed on globe */}
+          {skills.map((skill, i) => {
+            const basePhi = Math.acos(-1 + (2 * i) / skills.length);
+            const baseTheta = Math.sqrt(skills.length * Math.PI) * basePhi;
+            const phiRand = basePhi + (randomOffsets[i]?.phi ?? 0);
+            const thetaRand = baseTheta + (randomOffsets[i]?.theta ?? 0);
+            const r = globeRadius;
+            const x = r * Math.cos(thetaRand) * Math.sin(phiRand);
+            const y = r * Math.sin(thetaRand) * Math.sin(phiRand);
+            const z = r * Math.cos(phiRand);
+            return (
+              <Html
+                key={skill}
+                position={[x, y, z]}
+                center
+                style={{ pointerEvents: "none" }}
+              >
+                <span
+                  className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased flex items-center justify-center text-center ${getColorClass(
+                    i,
+                    skill
+                  )}`}
+                  style={{
+                    fontSize: 16,
+                    userSelect: "none",
+                    fontFamily:
+                      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+                    WebkitFontSmoothing: "antialiased",
+                    MozOsxFontSmoothing: "grayscale",
+                  }}
+                >
+                  {skill}
+                </span>
+              </Html>
+            );
+          })}
+        </RotatingGlobe>
+      </Canvas>
+    </div>
   );
 }
 

@@ -4,7 +4,7 @@ import SkillGlobe from "./SkillGlobe";
 const Hero: React.FC = () => (
   <>
     <section className="w-full flex flex-col lg:flex-row items-center justify-center bg-base-100 overflow-x-hidden relative pt-20">
-      <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-end justify-center px-4 lg:pr-12 text-center lg:text-right pt-12 lg:pt-0">
+      <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-end justify-center px-4 lg:pr-12 text-center lg:text-right pt-12 lg:pt-0 mb-16 lg:mb-0">
         <div className="relative lg:pr-8 w-full lg:w-auto">
           <div
             className="hidden lg:block absolute top-1 bottom-1 right-0 w-1 bg-primary rounded-full"
