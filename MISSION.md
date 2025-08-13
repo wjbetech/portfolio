@@ -62,6 +62,64 @@ To build a truly personal, unique, and retro-themed portfolio website that is bo
 - **Accessibility:** Usable by everyone
 - **Open Source:** Clean, maintainable codebase
 
+## Modern Portfolio Improvements for 2025
+
+1. **Micro-Interactions & Delightful Animations:**  
+   Subtle hover, tap, and scroll-triggered animations (using Framer Motion or Lottie) make the site feel alive and polished.
+
+2. **Personalized 3D/Parallax Effects:**  
+   Use 3D elements (Three.js, R3F) or parallax scrolling for depth and immersion, especially in hero or project sections.
+
+3. **Live Demos & Interactive Sandboxes:**  
+   Let users interact with your projects directly on the site (CodeSandbox embeds, live previews, or interactive widgets).
+
+4. **Dark/Light/Custom Theme Toggle:**  
+   Even with a retro base, offering a playful theme switcher (or color customizer) can boost engagement.
+
+5. **AI-Powered Features:**
+
+   - Smart search for projects/skills.
+   - AI chatbot for Q&A about your experience or projects.
+   - AI-generated project summaries or translations.
+
+6. **Accessibility & Inclusivity:**
+
+   - Full keyboard navigation, screen reader support, and high-contrast options.
+   - Language toggles (as you’re planning) and even text-to-speech for key sections.
+
+7. **Performance & Mobile Polish:**
+
+   - Lightning-fast load times, optimized images, and smooth transitions.
+   - Touch-friendly gestures and mobile-first layouts.
+
+8. **Unique Personal Branding:**
+
+   - Custom illustrations, mascots, or a signature animation.
+   - Easter eggs or hidden features that reflect your personality.
+
+9. **Social Proof & Testimonials:**
+
+   - Carousel of testimonials, endorsements, or project collaborators.
+   - Real-time GitHub/LinkedIn activity or badges.
+
+10. **Blog or Thought Leadership Section:**
+
+    - Share insights, tutorials, or case studies to show expertise and personality.
+
+11. **Downloadable Resume & One-Click Contact:**
+
+    - Easy access to your CV and a one-click “email me” or “book a call” button.
+
+12. **Analytics & Feedback:**
+    - Anonymous feedback form or emoji reactions for visitors to leave impressions.
+
 ---
 
-This mission statement will guide all design and development decisions for the portfolio website.
+## Current TODOs (as of August 13, 2025)
+
+1. Fix the Hero section in full screen mode (currently sat too far down page, looks good on mobile though)
+2. Redesign the SkillGlobe component to make it look more professional, cool, and unique
+3. Build out the Projects descriptions for each application and ensure all items are deployed, working, and usable
+4. Hook up the Contact component so that it actually works
+5. Add a language toggle between English (en) and Korean (ko)
+6. Get cat animations working properly
