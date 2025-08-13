@@ -1,4 +1,8 @@
+import { useState } from "react";
+import { FaBars, FaTimes } from "react-icons/fa";
+
 export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <nav className="navbar bg-content text-secondary-content px-4 w-full fixed top-0 left-0 z-50">
       <div className="flex-1">
@@ -28,25 +32,21 @@ export default function Navbar() {
         </ul>
         {/* Mobile dropdown */}
         <div className="dropdown dropdown-end lg:hidden">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
+          <label
+            tabIndex={0}
+            className="btn btn-ghost btn-circle cursor-pointer"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? (
+              <FaTimes className="h-6 w-6" />
+            ) : (
+              <FaBars className="h-6 w-6" />
+            )}
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-1 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            onClick={() => setMenuOpen(false)}
           >
             <li>
               <a href="#about">About</a>

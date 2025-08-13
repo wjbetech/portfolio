@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { motion } from "framer-motion";
 import { Group } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
@@ -83,7 +84,12 @@ function SkillGlobe() {
     });
   }, []);
   return (
-    <div style={{ position: "relative", width: 700, height: 700 }}>
+    <motion.div
+      style={{ position: "relative", width: 700, height: 700 }}
+      initial={{ opacity: 0, y: 32 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+    >
       {/* Low opacity label behind the globe */}
       <div
         style={{
@@ -175,7 +181,7 @@ function SkillGlobe() {
           })}
         </RotatingGlobe>
       </Canvas>
-    </div>
+    </motion.div>
   );
 }
 

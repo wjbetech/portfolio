@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Project1 from "./Project1";
 import Project2 from "./Project2";
 import Project3 from "./Project3";
@@ -32,8 +33,19 @@ const Projects: React.FC = () => {
           </button>
         ))}
       </div>
-      <div className="w-full max-w-2xl bg-base-100 rounded-lg p-8 shadow-none">
-        {renderProject()}
+      <div className="w-full max-w-2xl bg-base-100 rounded-lg p-8 shadow-none min-h-[400px]">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -24 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="h-full"
+          >
+            {renderProject()}
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );
