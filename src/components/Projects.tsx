@@ -3,7 +3,8 @@ import React from "react";
 const Projects: React.FC = () => (
   <section
     id="projects"
-    className="w-screen h-screen flex flex-col items-center justify-center bg-base-200 overflow-x-hidden">
+    className="w-full h-screen flex flex-col items-center justify-center bg-base-200 overflow-x-hidden"
+  >
     {/* TODO: Add interactive multi-tab project panels */}
     <h2 className="text-4xl font-bold mb-8">Projects</h2>
     <div className="tabs tabs-boxed mb-8">

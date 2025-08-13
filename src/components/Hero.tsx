@@ -3,19 +3,22 @@ import SkillGlobe from "./SkillGlobe";
 
 const Hero: React.FC = () => (
   <>
-    <section className="w-screen h-screen flex flex-row items-center justify-center bg-base-100 overflow-x-hidden relative -mt-24">
+    <section className="w-full h-screen flex flex-row items-center justify-center bg-base-100 overflow-x-hidden relative -mt-24">
       <div className="flex flex-col items-end justify-center w-2/5 h-full pr-12 text-right">
         <div className="relative pr-8">
           <div
             className="absolute top-1 bottom-1 right-0 w-1 bg-primary rounded-full"
             style={{ height: "94%" }}
-            aria-hidden="true"></div>
+            aria-hidden="true"
+          ></div>
           <img
             src="/src/assets/wjbe.png"
             alt="William East profile"
             className="rounded-full w-40 h-40 mb-4 border-4 border-primary ml-auto"
           />
-          <h1 className="text-5xl text-secondary-content font-bold mb-2">William East</h1>
+          <h1 className="text-5xl text-secondary-content font-bold mb-2">
+            William East
+          </h1>
           <p className="text-xl font-semibold mb-2">Full-stack Developer</p>
           <p className="text-xl mb-4">Native to UK - living in Seoul, Korea</p>
         </div>
@@ -31,9 +34,14 @@ const Hero: React.FC = () => (
           if (el) {
             el.scrollIntoView({ behavior: "smooth" });
           }
-        }}>
-        <span className="animate-bounce text-4xl text-primary drop-shadow-lg">↓</span>
-        <span className="text-xs mt-1 text-primary-content opacity-70">Scroll</span>
+        }}
+      >
+        <span className="animate-bounce text-4xl text-primary drop-shadow-lg">
+          ↓
+        </span>
+        <span className="text-xs mt-1 text-primary-content opacity-70">
+          Scroll
+        </span>
       </div>
     </section>
   </>
