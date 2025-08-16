@@ -13,27 +13,25 @@ const Projects: React.FC = () => {
     { name: "kiip-prep", component: <Project2 /> },
     { name: "sodraidcomp", component: <Project3 /> },
     { name: "wordweb.", component: <Project4 /> },
-    { name: "Zenite", component: <Project5 /> },
+    { name: "Zenite", component: <Project5 /> }
   ];
   const renderProject = () => projectTabs[activeTab]?.component;
   return (
     <section
       id="projects"
-      className="w-full h-screen flex flex-col items-center justify-center bg-base-200 overflow-x-hidden"
-    >
+      className="w-full h-screen flex flex-col items-center justify-center bg-base-200 overflow-x-hidden">
       <h2 className="text-4xl font-bold mb-8">Projects</h2>
-      <div className="tabs tabs-boxed mb-8">
+      <div className="flex flex-col md:flex-row gap-4 tabs tabs-boxed mb-8">
         {projectTabs.map((tab, idx) => (
           <button
             key={tab.name}
             className={`tab${activeTab === idx ? " tab-active" : ""}`}
-            onClick={() => setActiveTab(idx)}
-          >
+            onClick={() => setActiveTab(idx)}>
             {tab.name}
           </button>
         ))}
       </div>
-      <div className="w-full max-w-2xl bg-base-100 rounded-lg p-8 shadow-none min-h-[400px]">
+      <div className="w-full max-w-5xl bg-base-100 rounded-lg p-6 md:p-8 shadow-none mx-4 md:mx-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -41,8 +39,7 @@ const Projects: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -24 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="h-full"
-          >
+            className="h-full">
             {renderProject()}
           </motion.div>
         </AnimatePresence>

@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="relative w-full min-h-screen bg-content">
       <Navbar />
-      <main className="pt-20">
+      <main className="pt-0">
         <Hero />
         <Projects />
         <Contact />

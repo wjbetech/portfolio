@@ -2,19 +2,17 @@ import ProjectShowcase from "./ProjectShowcase";
 
 const Project5: React.FC = () => (
   <div className="flex flex-col items-start w-full">
-    <h3 className="text-2xl font-bold mb-2">Zenite</h3>
-    <div className="flex flex-row w-full gap-8 mt-6">
-      <div className="flex-1 min-w-0">
+    <h3 className="text-2xl font-bold mb-2 text-center m-auto">Zenite</h3>
+    <div className="flex flex-col md:flex-row  w-full gap-6 mt-6">
+      <div className="w-full md:w-2/3">
         <ProjectShowcase />
       </div>
-      <div className="flex-1 min-w-0 max-h-[352px] overflow-y-auto bg-base-100 rounded-xl border border-base-300 p-4 shadow-inner">
+      <div className="w-full md:w-2/3 max-h-[400px] overflow-y-auto bg-base-100 rounded-xl border border-base-300 p-4 shadow-inner">
         <p>
-          {/* Add your detailed project description here. This section is scrollable if the text overflows. */}
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-          euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget
-          aliquam massa nisl quis neque. Mauris non erat nec nulla dictum
-          dictum. Etiam euismod, urna eu tincidunt consectetur, nisi nisl
-          aliquam nunc, eget aliquam massa nisl quis neque.
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur,
+          nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Mauris non erat nec nulla dictum dictum. Etiam
+          euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Sed ut
+          perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
         </p>
       </div>
     </div>

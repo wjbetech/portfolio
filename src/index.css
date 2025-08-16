@@ -26,6 +26,9 @@ body {
   min-height: 100vh;
   font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+  /* Always reserve scrollbar space to prevent layout shift when it appears */
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
 }
 
 /* Use VT323 for headings and .font-mono utility */
