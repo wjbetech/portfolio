@@ -23,8 +23,7 @@ export default function Navbar() {
               <button
                 type="button"
                 className="flex items-center gap-2 btn btn-ghost font-thin"
-                onClick={() => navigate(-1)}
-              >
+                onClick={() => navigate(-1)}>
                 <FaArrowLeft className="w-4 h-4" />
                 <span>Back</span>
               </button>
@@ -57,7 +56,10 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}>
             {isAbout ? (
               <li>
-                <button type="button" className="w-full text-left flex items-center gap-2 font-thin" onClick={() => navigate(-1)}>
+                <button
+                  type="button"
+                  className="w-full text-left flex items-center gap-2 font-thin"
+                  onClick={() => navigate(-1)}>
                   <FaArrowLeft className="inline-block mr-2" />
                   <span>Back</span>
                 </button>
