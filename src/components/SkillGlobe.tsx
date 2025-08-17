@@ -146,6 +146,38 @@ function SkillGlobe() {
     };
   }, []);
 
+  // Additional safety: ensure dragging class is cleared if pointerup happens outside canvas or propagation is stopped
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const canvasEl = container.querySelector(".skillglobe-canvas") as HTMLElement | null;
+    if (!canvasEl) return;
+
+    // Remove any leftover class on mount
+    canvasEl.classList.remove("dragging");
+
+    const onPointerDown = () => canvasEl.classList.add("dragging");
+    const onPointerUp = () => canvasEl.classList.remove("dragging");
+    const onPointerCancel = () => canvasEl.classList.remove("dragging");
+
+    // Listen on the canvas element for pointerdown so we mark dragging reliably
+    canvasEl.addEventListener("pointerdown", onPointerDown);
+    // Also listen globally for pointerup/touchend/pointercancel to clear dragging even if release happens off-canvas
+    window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("touchend", onPointerUp);
+    window.addEventListener("pointercancel", onPointerCancel);
+
+    return () => {
+      canvasEl.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("touchend", onPointerUp);
+      window.removeEventListener("pointercancel", onPointerCancel);
+      // ensure cleanup
+      canvasEl.classList.remove("dragging");
+    };
+  }, []);
+
   const paused = !inView || !docVisible;
 
   // choose a simplified skill set and geometry for low-power devices
@@ -363,7 +395,13 @@ function SkillGlobe() {
                   className={`min-w-[92px] px-3 py-1.5 rounded-full font-semibold text-sm antialiased flex items-center justify-center text-center gap-2 transform-gpu transition-all duration-300 cursor-not-allowed`}
                   onPointerDown={(e) => e.stopPropagation()}
                   onPointerMove={(e) => e.stopPropagation()}
-                  onPointerUp={(e) => e.stopPropagation()}
+                  onPointerUp={(e) => {
+                    e.stopPropagation();
+                    // ensure any inline-transform/boxShadow applied during interaction is removed
+                    const el = e.currentTarget as HTMLElement;
+                    el.style.transform = "translateZ(0) scale(1)";
+                    el.style.boxShadow = `0 10px 28px ${hexToRgba(color, 0.16)}, inset 0 1px 0 rgba(255,255,255,0.02)`;
+                  }}
                   onTouchStart={(e) => e.stopPropagation()}
                   onMouseEnter={(e) => {
                     const el = e.currentTarget as HTMLElement;
@@ -385,15 +423,8 @@ function SkillGlobe() {
                     el.style.transform = "translateZ(0) scale(1)";
                     el.style.boxShadow = `0 10px 28px ${hexToRgba(color, 0.16)}, inset 0 1px 0 rgba(255,255,255,0.02)`;
                   }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      const el = e.currentTarget as HTMLElement;
-                      el.style.transform = "translateZ(0) scale(1.06)";
-                      setTimeout(() => (el.style.transform = "translateZ(0) scale(1.08)"), 120);
-                      e.preventDefault();
-                      e.stopPropagation();
-                    }
-                  }}
+                  // removed keydown-induced persistent scaling to avoid labels staying enlarged after activation
+                  // keep keyboard activation accessible via focus + Enter/Space semantics handled by the button role
                   style={{
                     userSelect: "none",
                     fontFamily:

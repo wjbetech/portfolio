@@ -1,5 +1,6 @@
 import React from "react";
 import SkillGlobe from "./SkillGlobe";
+import { FiChevronDown } from "react-icons/fi";
 
 const Hero: React.FC = () => (
   <>
@@ -24,16 +25,28 @@ const Hero: React.FC = () => (
         <SkillGlobe />
       </div>
       {/* Scroll down indicator */}
-      <div
-        className="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-14 flex-col items-center select-none cursor-pointer z-10"
-        onClick={() => {
-          const el = document.getElementById("projects");
-          if (el) {
-            el.scrollIntoView({ behavior: "smooth" });
-          }
-        }}>
-        <span className="animate-bounce text-4xl text-primary drop-shadow-lg">↓</span>
-        <span className="text-xs mt-1 text-primary-content opacity-70">Scroll</span>
+      <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 bottom-14 z-10">
+        <button
+          type="button"
+          aria-label="Scroll to Projects"
+          className="group inline-flex items-center justify-center focus:outline-none"
+          onClick={() => {
+            const el = document.getElementById("projects");
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              const el = document.getElementById("projects");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }
+          }}>
+          <span
+            className="flex items-center justify-center w-12 h-12 rounded-full bg-base-200/60 backdrop-blur-sm border border-primary/20 text-primary-content cursor-pointer transition-transform transform-gpu will-change-transform group-hover:scale-110 group-active:scale-95 motion-safe:animate-[bounce_1.2s_infinite] focus-visible:ring-4 focus-visible:ring-primary/30"
+            aria-hidden="true">
+            <FiChevronDown className="w-6 h-6" />
+          </span>
+        </button>
       </div>
     </section>
   </>
