@@ -5,7 +5,7 @@ const Hero: React.FC = () => (
   <>
     <section className="w-full flex flex-col lg:flex-row items-center justify-start bg-base-100 overflow-x-hidden relative pt-12 lg:pt-0">
       <div className="w-full lg:w-2/5 transform-gpu origin-top scale-95 lg:scale-100 flex flex-col items-center justify-center px-4 lg:pr-12 text-center lg:text-right pt-12 lg:h-screen lg:pt-0">
-        <div className="relative w-full lg:pr-12 xl:pr-24 2xl: pr-36">
+        <div className="relative w-full lg:pr-12 xl:pr-24">
           <div
             className="hidden lg:block absolute top-1 bottom-1 right-0 w-1 bg-primary rounded-full"
             style={{ height: "94%" }}
