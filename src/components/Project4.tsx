@@ -2,7 +2,7 @@ import ProjectShowcase from "./ProjectShowcase";
 
 const Project4: React.FC = () => (
   <div className="flex flex-col items-start w-full">
-    <h3 className="flex text-2xl font-bold mb-2 text-center m-auto">wordweb.</h3>
+    <h3 className="flex text-3xl font-bold mb-2 text-center m-auto">wordweb.</h3>
     <div className="flex flex-col md:flex-row w-full gap-6 mt-6">
       <div className="w-full md:w-2/3">
         <ProjectShowcase />

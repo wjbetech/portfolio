@@ -19,27 +19,81 @@ const Projects: React.FC = () => {
   return (
     <section
       id="projects"
-      className="w-full flex flex-col items-center justify-center bg-base-100 overflow-x-hidden py-20">
+      className="w-full min-h-screen flex flex-col items-center justify-center bg-base-100 overflow-x-hidden py-20">
       <h2 className="text-4xl font-bold mb-8">Projects</h2>
-      <div className="flex flex-col md:flex-row gap-4 tabs tabs-boxed mb-8">
-        {projectTabs.map((tab, idx) => (
-          <button
-            key={tab.name}
-            className={`tab${activeTab === idx ? " tab-active" : ""}`}
-            onClick={() => setActiveTab(idx)}>
-            {tab.name}
-          </button>
-        ))}
+      {/* Nav-style project bar: subtle border, evenly distributed buttons */}
+      <div className="w-full max-w-5xl mx-4 md:mx-0 mb-8">
+        <div className="relative">
+          {/* top hairline for subtle separation */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: 0,
+              right: 0,
+              top: 0,
+              height: 1,
+              background: "linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,0.06), rgba(0,0,0,0))",
+              pointerEvents: "none"
+            }}
+          />
+
+          {/* main nav (glass + subtle backdrop) */}
+          <nav
+            role="tablist"
+            aria-label="Projects"
+            className="w-full bg-[rgba(255,255,255,0.02)] px-3 py-2 flex items-center overflow-x-auto"
+            style={{ backdropFilter: "saturate(120%) blur(6px)" }}>
+            <div className="flex w-full items-center justify-between gap-4">
+              {projectTabs.map((tab, idx) => (
+                <button
+                  id={`project-tab-${idx}`}
+                  key={tab.name}
+                  role="tab"
+                  aria-selected={activeTab === idx}
+                  aria-controls={`project-panel-${idx}`}
+                  onClick={() => setActiveTab(idx)}
+                  className={`flex-1 text-center px-3 py-2 rounded-md transition-transform cursor-pointer ${
+                    activeTab === idx
+                      ? 'bg-primary text-white shadow-md'
+                      : 'bg-transparent text-base-content/80 hover:bg-base-200'
+                  }`}>
+                  {tab.name}
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          {/* colored blurred accent below the bar for a modern border effect */}
+          <div
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "6%",
+              right: "6%",
+              bottom: -6,
+              height: 8,
+              borderRadius: 9999,
+              background: "linear-gradient(90deg, rgba(108,99,255,0.12), rgba(6,182,212,0.09), rgba(249,115,22,0.08))",
+              filter: "blur(10px)",
+              opacity: 0.95,
+              pointerEvents: "none"
+            }}
+          />
+        </div>
       </div>
       <div className="w-full max-w-5xl bg-base-100 rounded-lg p-6 md:p-8 shadow-none mx-4 md:mx-0">
         <AnimatePresence mode="wait">
           <motion.div
+            id={`project-panel-${activeTab}`}
             key={activeTab}
+            role="region"
+            aria-labelledby={`project-tab-${activeTab}`}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -24 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="">
+            className="w-full">
             {renderProject()}
           </motion.div>
         </AnimatePresence>
