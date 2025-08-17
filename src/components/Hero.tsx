@@ -4,7 +4,7 @@ import SkillGlobe from "./SkillGlobe";
 const Hero: React.FC = () => (
   <>
     <section className="w-full flex flex-col lg:flex-row items-center justify-start bg-base-100 overflow-x-hidden relative pt-12 lg:pt-0">
-      <div className="w-full lg:w-2/5 flex flex-col items-center lg:items-end justify-center px-4 lg:pr-12 text-center lg:text-right h-screen lg:h-auto lg:pt-0">
+      <div className="w-full lg:w-2/5 transform-gpu origin-top scale-95 lg:scale-100 flex flex-col items-center lg:items-end justify-center px-4 lg:pr-12 text-center lg:text-right h-1/2 pt-24 lg:h-screen lg:pt-0">
         <div className="relative lg:pr-8 w-full lg:w-auto">
           <div
             className="hidden lg:block absolute top-1 bottom-1 right-0 w-1 bg-primary rounded-full"
@@ -20,7 +20,7 @@ const Hero: React.FC = () => (
           <p className="text-xl sm:text-2xl lg:text-xl mb-4">Native to UK - living in Seoul, Korea</p>
         </div>
       </div>
-      <div className="w-full lg:w-3/5 flex flex-col items-center justify-center px-4 lg:pl-8 lg:pt-0">
+      <div className="w-full lg:w-3/5 transform-gpu origin-top scale-95 lg:scale-100 flex flex-col items-center justify-center px-4 lg:pl-8 lg:pt-0">
         <SkillGlobe />
       </div>
       {/* Scroll down indicator */}

@@ -14,7 +14,7 @@ const skills = [
   "Next.js",
   "Figma",
   "PostgreSQL",
-  "Express",
+  "Express"
 ];
 
 function RotatingGlobe({ children }: { children: React.ReactNode }) {
@@ -35,7 +35,7 @@ const colorClasses = [
   "bg-info text-info-content border-info",
   "bg-success text-success-content border-success",
   "bg-warning text-warning-content border-warning",
-  "bg-error text-error-content border-error",
+  "bg-error text-error-content border-error"
 ];
 
 // Use a seeded random for reproducibility (same order every render)
@@ -46,8 +46,7 @@ function seededRandom(seed: number) {
 
 function getColorClass(idx: number, skill: string) {
   // Use skill name and index to generate a pseudo-random color
-  const hash =
-    skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
+  const hash = skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
   const randIdx = Math.floor(seededRandom(hash) * colorClasses.length);
   return colorClasses[randIdx];
 }
@@ -88,8 +87,7 @@ function SkillGlobe() {
       style={{ position: "relative", width: 700, height: 700 }}
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: "easeOut" }}
-    >
+      transition={{ duration: 0.7, ease: "easeOut" }}>
       {/* Low opacity label behind the globe */}
       <div
         style={{
@@ -107,9 +105,8 @@ function SkillGlobe() {
           fontFamily: "VT323, monospace",
           letterSpacing: "0.1em",
           textAlign: "center",
-          userSelect: "none",
-        }}
-      >
+          userSelect: "none"
+        }}>
         My Skills
       </div>
       <Canvas
@@ -120,11 +117,10 @@ function SkillGlobe() {
           position: "absolute",
           top: 0,
           left: 0,
-          zIndex: 1,
+          zIndex: 1
         }}
         camera={{ position: [0, 0, 700], fov: 50 }}
-        gl={{ preserveDrawingBuffer: true, alpha: true }}
-      >
+        gl={{ preserveDrawingBuffer: true, alpha: true }}>
         <ambientLight intensity={0.7} />
         <directionalLight position={[5, 5, 5]} intensity={0.7} />
         <OrbitControls
@@ -154,12 +150,7 @@ function SkillGlobe() {
             const y = r * Math.sin(thetaRand) * Math.sin(phiRand);
             const z = r * Math.cos(phiRand);
             return (
-              <Html
-                key={skill}
-                position={[x, y, z]}
-                center
-                style={{ pointerEvents: "none" }}
-              >
+              <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "none" }}>
                 <span
                   className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased flex items-center justify-center text-center ${getColorClass(
                     i,
@@ -171,9 +162,8 @@ function SkillGlobe() {
                     fontFamily:
                       'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
                     WebkitFontSmoothing: "antialiased",
-                    MozOsxFontSmoothing: "grayscale",
-                  }}
-                >
+                    MozOsxFontSmoothing: "grayscale"
+                  }}>
                   {skill}
                 </span>
               </Html>
@@ -187,7 +177,7 @@ function SkillGlobe() {
 
 export default function App() {
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center h-1/2 lg:w-full mx-4 max-w-[600px] lg:max-w-[1000px] align-center place-items-center place-content-center">
       <SkillGlobe />
     </div>
   );
