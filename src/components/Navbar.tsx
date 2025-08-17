@@ -20,7 +20,11 @@ export default function Navbar() {
         <ul className="menu menu-horizontal px-1 gap-4 hidden lg:flex text-accent-content">
           {isAbout ? (
             <li>
-              <button type="button" className="flex items-center gap-2 btn btn-ghost" onClick={() => navigate(-1)}>
+              <button
+                type="button"
+                className="flex items-center gap-2 btn btn-ghost font-thin"
+                onClick={() => navigate(-1)}
+              >
                 <FaArrowLeft className="w-4 h-4" />
                 <span>Back</span>
               </button>
@@ -53,8 +57,9 @@ export default function Navbar() {
             onClick={() => setMenuOpen(false)}>
             {isAbout ? (
               <li>
-                <button type="button" className="w-full text-left" onClick={() => navigate(-1)}>
-                  <FaArrowLeft className="inline-block mr-2" /> Back
+                <button type="button" className="w-full text-left flex items-center gap-2 font-thin" onClick={() => navigate(-1)}>
+                  <FaArrowLeft className="inline-block mr-2" />
+                  <span>Back</span>
                 </button>
               </li>
             ) : (
