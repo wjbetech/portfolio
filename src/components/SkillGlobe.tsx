@@ -111,7 +111,7 @@ function SkillGlobe() {
       </div>
       <Canvas
         style={{
-          width: 700,
+          width: 600,
           height: 700,
           background: "transparent",
           position: "absolute",
