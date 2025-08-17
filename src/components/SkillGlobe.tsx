@@ -84,7 +84,7 @@ function SkillGlobe() {
   }, []);
   return (
     <motion.div
-      style={{ position: "relative", width: 700, height: 700 }}
+      style={{ position: "relative", width: "100%", maxWidth: 700, aspectRatio: "1 / 1", margin: "0 auto" }}
       initial={{ opacity: 0, y: 32 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}>
@@ -111,12 +111,10 @@ function SkillGlobe() {
       </div>
       <Canvas
         style={{
-          width: 600,
-          height: 700,
+          width: "100%",
+          height: "100%",
           background: "transparent",
-          position: "absolute",
-          top: 0,
-          left: 0,
+          position: "relative",
           zIndex: 1
         }}
         camera={{ position: [0, 0, 700], fov: 50 }}
@@ -175,9 +173,9 @@ function SkillGlobe() {
   );
 }
 
-export default function App() {
+export default function SkillGlobeWrapper() {
   return (
-    <div className="flex items-center justify-center h-1/2 lg:w-full mx-4 max-w-[600px] lg:max-w-[1000px] align-center place-items-center place-content-center">
+    <div className="w-full flex items-center justify-center mx-auto" style={{ maxWidth: 1000 }}>
       <SkillGlobe />
     </div>
   );

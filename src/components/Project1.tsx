@@ -7,7 +7,7 @@ const Project1: React.FC = () => (
       <div className="w-full md:w-2/3">
         <ProjectShowcase />
       </div>
-      <div className="w-full md:w-2/3 max-h-[400px] overflow-y-auto bg-base-100 rounded-xl border border-base-300 p-4 shadow-inner">
+      <div className="w-full md:w-1/3 bg-base-100 rounded-xl border border-base-300 p-4 shadow-inner max-h-[415px] overflow-y-scroll">
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur,
           nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Mauris non erat nec nulla dictum dictum. Etiam

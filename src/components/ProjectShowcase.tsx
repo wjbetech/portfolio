@@ -17,7 +17,7 @@ const ProjectShowcase: React.FC = () => {
           <img
             src={placeholderImages[selected]}
             alt={`Selected project screenshot`}
-            className="w-full h-[240px] md:w-72 md:h-[352px] object-cover rounded-xl border-4 border-primary shadow-lg transition-all duration-200"
+            className="w-full max-w-[680px] h-auto md:flex-1 md:h-[420px] object-cover rounded-lg border-2 md:border-4 border-primary transition-all duration-200"
           />
         </div>
 
@@ -27,7 +27,7 @@ const ProjectShowcase: React.FC = () => {
               key={src}
               src={src}
               alt={`Project screenshot ${idx + 1}`}
-              className={`w-16 h-16 md:w-20 md:h-20 object-cover rounded-lg border-2 cursor-pointer transition-all duration-200 ${
+              className={`w-14 h-14 md:w-20 md:h-20 object-cover rounded-md border-2 cursor-pointer transition-all duration-200 ${
                 selected === idx ? "border-primary scale-110" : "border-base-300 opacity-70 hover:opacity-100"
               }`}
               onClick={() => setSelected(idx)}

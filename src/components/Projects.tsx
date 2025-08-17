@@ -19,7 +19,7 @@ const Projects: React.FC = () => {
   return (
     <section
       id="projects"
-      className="w-full h-screen flex flex-col items-center justify-center bg-base-200 overflow-x-hidden">
+      className="w-full flex flex-col items-center justify-center bg-base-100 overflow-x-hidden py-20">
       <h2 className="text-4xl font-bold mb-8">Projects</h2>
       <div className="flex flex-col md:flex-row gap-4 tabs tabs-boxed mb-8">
         {projectTabs.map((tab, idx) => (
@@ -39,7 +39,7 @@ const Projects: React.FC = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -24 }}
             transition={{ duration: 0.4, ease: "easeInOut" }}
-            className="h-full">
+            className="">
             {renderProject()}
           </motion.div>
         </AnimatePresence>
