@@ -208,6 +208,35 @@ Next scheduled task:
 
 Status: Ready to start Task 5 upon your confirmation.
 
+## Recent Work (as of 2025-08-17)
+
+- SEO & crawlability
+
+  - Added meta title, description, canonical, Open Graph and Twitter meta tags in `index.html`.
+  - Added JSON-LD Person schema for the site owner.
+  - Added PWA manifest (`public/site.webmanifest`) and a minimal `robots.txt`.
+  - Added `public/sitemap.xml` listing key anchors (`/`, `#projects`, `#contact`).
+
+- UX polish
+
+  - Replaced the text-based Hero scroll indicator with a modern chevron button using `react-icons`.
+  - Improved accessibility: keyboard activation for the scroll button and focus-visible styles.
+
+- SkillGlobe improvements
+
+  - Removed persistent click/keyboard scaling effect on SkillGlobe labels so they no longer stay enlarged after interaction.
+  - Added robust global `pointerup` / `touchend` / `pointercancel` handlers to ensure the `dragging` class is cleared even when release occurs outside the canvas.
+  - Adjusted label interactions to avoid stopping globe drag unexpectedly while keeping labels focusable and accessible.
+
+- Code hygiene
+
+  - Stopped automatic typecheck/lint runs in terminal to respect user environment; will run checks only when requested.
+
+- Backlog & next steps
+  - Replace placeholder domain and social preview image with production values.
+  - Consider adding CI (TypeScript + ESLint + Build) via GitHub Actions.
+  - Consider lazy-loading heavy components (SkillGlobe) to improve initial load.
+
 ## Assistant Protocol
 
 From now on the assistant will read project context from this `MISSION.md` file and write all progress reports, status updates, and task changes ONLY into this file unless you explicitly instruct otherwise. Any interactive edits or code changes will still be made in the repository files, but the summary of progress and next steps will be maintained here.
