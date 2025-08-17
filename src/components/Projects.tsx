@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Project1 from "./Project1";
 import Project2 from "./Project2";
@@ -16,6 +16,54 @@ const Projects: React.FC = () => {
     { name: "Zenite", component: <Project5 /> }
   ];
   const renderProject = () => projectTabs[activeTab]?.component;
+  // refs for tab buttons to manage focus/keyboard navigation
+  const tabsRef = useRef<Array<HTMLButtonElement | null>>([]);
+
+  useEffect(() => {
+    // Keep the active tab reachable by keyboard — ensure tabIndex semantics are correct
+    const btn = tabsRef.current[activeTab];
+    if (btn) {
+      btn.tabIndex = 0;
+    }
+    // other buttons will get tabIndex set in JSX
+  }, [activeTab]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    const len = projectTabs.length;
+    // find the index of the currently focused tab, fallback to activeTab
+    let idx = tabsRef.current.findIndex((el) => el === document.activeElement);
+    if (idx === -1) idx = activeTab;
+
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      const next = (idx + 1) % len;
+      tabsRef.current[next]?.focus();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      const prev = (idx - 1 + len) % len;
+      tabsRef.current[prev]?.focus();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "Home") {
+      tabsRef.current[0]?.focus();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "End") {
+      tabsRef.current[len - 1]?.focus();
+      e.preventDefault();
+      return;
+    }
+    if (e.key === "Enter" || e.key === " ") {
+      const focused = tabsRef.current.findIndex((el) => el === document.activeElement);
+      if (focused >= 0) setActiveTab(focused);
+      e.preventDefault();
+      return;
+    }
+  };
+
   return (
     <section
       id="projects"
@@ -40,6 +88,7 @@ const Projects: React.FC = () => {
 
           {/* main nav: slightly darker glass background + subtle bottom hairline */}
           <nav
+            onKeyDown={handleKeyDown}
             role="tablist"
             aria-label="Projects"
             className="w-full bg-[rgba(255,255,255,0.06)] border-b border-base-300 px-3 py-2 flex items-center overflow-x-auto"
@@ -47,13 +96,18 @@ const Projects: React.FC = () => {
             <div className="flex w-full items-center justify-between gap-4">
               {projectTabs.map((tab, idx) => (
                 <button
+                  ref={(el) => {
+                    tabsRef.current[idx] = el;
+                    return;
+                  }}
                   id={`project-tab-${idx}`}
                   key={tab.name}
                   role="tab"
                   aria-selected={activeTab === idx}
                   aria-controls={`project-panel-${idx}`}
+                  tabIndex={activeTab === idx ? 0 : -1}
                   onClick={() => setActiveTab(idx)}
-                  className={`flex-1 text-center px-3 py-2 rounded-md transition-transform cursor-pointer ${
+                  className={`flex-1 text-center px-3 py-2 rounded-md transition-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
                     activeTab === idx
                       ? "bg-primary text-white shadow-md"
                       : "bg-transparent text-base-content/95 hover:bg-base-200"

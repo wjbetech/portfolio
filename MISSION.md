@@ -123,6 +123,7 @@ To build a truly personal, unique, and retro-themed portfolio website that is bo
 4. Hook up the Contact component so that it actually works
 5. Add a language toggle between English (en) and Korean (ko)
 6. Get cat animations working properly
+7. Make the navbar use a solid background and higher z-index so it fully blocks content beneath it
 
 ## Prioritized Next Tasks
 
@@ -138,7 +139,62 @@ To build a truly personal, unique, and retro-themed portfolio website that is bo
    - Lower geometry, pause render when offscreen, or throttle updates on mobile.
 6. Small polish & accessibility improvements
    - Visible focus styles, aria-live for dynamic content, skip links, and other a11y fixes.
+7. Make the navbar use a solid background and higher z-index so it fully blocks content beneath it
+   - Ensure the navbar has a stable background color (no translucency) and a z-index high enough to overlay sections like the SkillGlobe or hero elements.
+   - Update Tailwind/DaisyUI classes in the navbar component (e.g., add `bg-base-100` or a custom color and `z-50` or higher) and verify it covers any overlapping elements.
+   - Confirm the navbar remains keyboard accessible and that focus outlines are visible when overlaying content.
 
-Status:
+## Progress Updates
 
-- Task 1 (Convert `Contact` → `min-h-screen`) completed.
+- Task 2 (Add keyboard navigation to Projects bar): Implemented.
+  - Arrow keys (Left/Right/Up/Down) move focus between tabs.
+  - Home/End jump to first/last tab.
+  - Enter/Space activate the focused tab.
+  - Tabs now maintain correct `tabIndex` and include `focus-visible` ring styles for keyboard users.
+  - ARIA attributes preserved for screen readers.
+
+Next steps:
+
+- Task 3 will add safe hover/focus interactions for SkillGlobe pills (enable scale/glow while preserving globe drag behavior).
+- Optionally add live region announcements on tab change for screen readers.
+
+- Status: Moving on to Task 3.
+
+## Recent Progress
+
+- Task 3 (Enable safe hover/focus interactions for SkillGlobe pills): Implemented.
+  - Pills are focusable, use `role="button"` and `tabIndex` to support keyboard focus.
+  - Pointer events on pills stop propagation so globe drag is not triggered when interacting with labels.
+  - Hover and focus increase scale and glow for visual affordance; Enter/Space produce a small pulse.
+  - Pills show `cursor-not-allowed` to indicate clicking labels won't rotate the globe.
+
+-- New: Task 7 (Navbar background/z-index): Added to TODOs and Prioritized Tasks.
+
+- Plan: Update navbar component to use solid background and `z-50` (or higher) and verify keyboard and focus behavior. Adjust as needed when overlapping interactive elements.
+
+## Next Task (Scheduled)
+
+- Task 4: Tweak `Hero` forced height
+  - Change `lg:h-screen` usages to `lg:min-h-screen` or remove exact `h-screen` to prevent forced heights that create layout issues on some viewports.
+  - File: `src/components/Hero.tsx`
+  - I will implement Task 4 now unless you instruct otherwise.
+
+Status: Starting Task 4.
+
+- Task 4 (Tweak Hero height): Reviewed and left as-is per user preference.
+
+Next scheduled task:
+
+- Task 5: Globe performance improvements (lower geometry, pause render when offscreen, or throttle updates on mobile).
+
+Status: Ready to start Task 5 upon your confirmation.
+
+## Assistant Protocol
+
+From now on the assistant will read project context from this `MISSION.md` file and write all progress reports, status updates, and task changes ONLY into this file unless you explicitly instruct otherwise. Any interactive edits or code changes will still be made in the repository files, but the summary of progress and next steps will be maintained here.
+
+- How this works:
+  - The assistant will append progress notes, task completions, and short changelogs to this file.
+  - If you want a different format or a separate changelog file, tell the assistant and it will follow that instruction.
+
+_Acknowledged and enabled._
