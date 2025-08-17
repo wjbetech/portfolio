@@ -157,3 +157,5 @@ const Projects: React.FC = () => {
 };
 
 export default Projects;
+
+// Note: `Projects` already exposes `id="projects"` on its section and `Contact` uses `id="contact"` in its component. Navbar anchors point to those ids.
