@@ -9,7 +9,7 @@ export default function Navbar() {
   const isAbout = location.pathname === "/about";
 
   return (
-    <nav className="navbar bg-base-100 text-secondary-content px-4 w-full fixed top-0 left-0 z-60 shadow-sm">
+    <nav className="navbar h-16 items-center bg-base-100 text-secondary-content px-4 w-full fixed top-0 left-0 z-60 shadow-sm">
       <div className="flex-1">
         <Link className="btn btn-ghost text-2xl tracking-widest" id="title" to="/">
           wjbetech
