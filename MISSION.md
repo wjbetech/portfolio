@@ -163,14 +163,33 @@ Next steps:
 ## Recent Progress
 
 - Task 3 (Enable safe hover/focus interactions for SkillGlobe pills): Implemented.
-  - Pills are focusable, use `role="button"` and `tabIndex` to support keyboard focus.
+  - Pills are focusable, use `role=\"button\"` and `tabIndex` to support keyboard focus.
   - Pointer events on pills stop propagation so globe drag is not triggered when interacting with labels.
   - Hover and focus increase scale and glow for visual affordance; Enter/Space produce a small pulse.
   - Pills show `cursor-not-allowed` to indicate clicking labels won't rotate the globe.
 
--- New: Task 7 (Navbar background/z-index): Added to TODOs and Prioritized Tasks.
++-- Task 4: Hero height tweak — Completed.
 
-- Plan: Update navbar component to use solid background and `z-50` (or higher) and verify keyboard and focus behavior. Adjust as needed when overlapping interactive elements.
+- - Outcome: Reviewed and adjusted hero heights where needed to use `min-h-screen` on large breakpoints, reducing layout issues.
+- +- Task 5: Globe performance — Completed (baseline optimizations applied).
+- - Changes made:
+- - Lowered sphere geometry segments on lower-power devices.
+- - Clamped Canvas DPR to a safe maximum.
+- - Paused rotation and switched Canvas to `frameloop="demand"` when the globe is offscreen or the document is hidden.
+- - Added smoothing to rotation via interpolated rotation target to reduce choppiness.
+- - Introduced optional sprite-based labels and caching for very low-power devices (kept Html labels for normal devices).
+- - Result: Globe performs noticeably better on mobile/low-end devices and pauses when offscreen.
+- +- Accessibility: Marked as completed.
+- - Changes: skip-link added, keyboard navigation, focus-visible styles, aria attributes where appropriate.
+- +- Linting/Type-check: Marked as completed.
+- - Changes: ran `tsc --noEmit` and ESLint; fixed issues detected during edits.
+- +Backlog: Further Globe Optimizations
+- - Considerations/Ideas:
+- - Replace more Html labels with sprites or three.js text for mid-tier devices.
+- - Throttle Html overlay updates to 30 FPS instead of every frame to reduce layout churn.
+- - Implement optional dynamic LOD: drop labels or extra geometry based on runtime metrics.
+- - Add render stats and a small diagnostics panel during profiling to fine-tune thresholds.
+- - Optionally implement a user-facing 'Low Power Mode' toggle.
 
 ## Next Task (Scheduled)
 

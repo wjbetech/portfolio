@@ -21,7 +21,7 @@ const Contact: React.FC = () => (
     <div className="mt-8 flex gap-4">
       <a
         className="btn btn-ghost text-xl"
-        href="https://www.linkedin.com/in/your-linkedin/"
+        href="https://www.linkedin.com/in/wjbetech/"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="LinkedIn">
@@ -29,7 +29,7 @@ const Contact: React.FC = () => (
       </a>
       <a
         className="btn btn-ghost text-xl"
-        href="https://github.com/your-github"
+        href="https://github.com/wjbetech"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="GitHub">

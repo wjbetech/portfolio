@@ -109,7 +109,7 @@ const Projects: React.FC = () => {
                   onClick={() => setActiveTab(idx)}
                   className={`flex-1 text-center px-3 py-2 rounded-md transition-transform cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
                     activeTab === idx
-                      ? "bg-primary text-white shadow-md"
+                      ? "bg-accent text-white shadow-md"
                       : "bg-transparent text-base-content/95 hover:bg-base-200"
                   }`}>
                   {tab.name}

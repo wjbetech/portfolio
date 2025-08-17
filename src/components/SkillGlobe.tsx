@@ -8,11 +8,20 @@ const skills = ["TypeScript", "Three.js", "Tailwind", "Node.js", "GitHub", "Next
 
 function RotatingGlobe({ children, paused }: { children: React.ReactNode; paused: boolean }) {
   const ref = useRef<Group>(null);
+  const targetRotation = useRef<number>(0);
   useFrame((state, delta) => {
-    // skip rotation when paused (offscreen or document hidden)
-    if (paused) return;
-    if (ref.current && !state.gl.domElement.classList.contains("dragging")) {
-      ref.current.rotation.y += delta * 0.25; // slow auto-spin
+    // accumulate target rotation only when not paused/dragging
+    const isDragging = state.gl.domElement.classList.contains("dragging");
+    if (!paused && !isDragging) {
+      targetRotation.current += delta * 0.25; // desired rotation increment
+    }
+
+    // smooth interpolation (lerp) toward targetRotation
+    if (ref.current) {
+      const cur = ref.current.rotation.y;
+      // smoothing factor scales with delta for frame-rate independence
+      const t = 1 - Math.exp(-6 * delta); // eased lerp (approaches 1 quickly)
+      ref.current.rotation.y = cur + (targetRotation.current - cur) * t;
     }
   });
   return <group ref={ref}>{children}</group>;
@@ -294,6 +303,9 @@ function SkillGlobe() {
         <OrbitControls
           enablePan={false}
           enableZoom={false}
+          enableDamping={true}
+          dampingFactor={0.08}
+          rotateSpeed={0.6}
           onStart={() => {
             // toggle dragging cursor on this globe's canvas only
             document.querySelector(".skillglobe-canvas")?.classList.add("dragging");
