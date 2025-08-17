@@ -27,28 +27,35 @@ function RotatingGlobe({ children }: { children: React.ReactNode }) {
   return <group ref={ref}>{children}</group>;
 }
 
-// DaisyUI color classes to randomly assign
-const colorClasses = [
-  "bg-primary text-primary-content border-primary",
-  "bg-secondary text-secondary-content border-secondary",
-  "bg-accent text-accent-content border-accent",
-  "bg-info text-info-content border-info",
-  "bg-success text-success-content border-success",
-  "bg-warning text-warning-content border-warning",
-  "bg-error text-error-content border-error"
+// Minimal, modern palette (hex values). We'll pick one per skill deterministically.
+const palette = [
+  "#6C63FF", // indigo-ish
+  "#06B6D4", // cyan
+  "#F97316", // orange
+  "#EF4444", // red
+  "#10B981", // green
+  "#8B5CF6", // violet
+  "#F59E0B" // amber
 ];
 
-// Use a seeded random for reproducibility (same order every render)
 function seededRandom(seed: number) {
   const x = Math.sin(seed) * 10000;
   return x - Math.floor(x);
 }
 
-function getColorClass(idx: number, skill: string) {
-  // Use skill name and index to generate a pseudo-random color
-  const hash = skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 31;
-  const randIdx = Math.floor(seededRandom(hash) * colorClasses.length);
-  return colorClasses[randIdx];
+function pickColor(idx: number, skill: string) {
+  const hash = skill.split("").reduce((acc, c) => acc + c.charCodeAt(0), 0) + idx * 97;
+  const i = Math.floor(seededRandom(hash) * palette.length);
+  return palette[i];
+}
+
+function hexToRgba(hex: string, alpha = 1) {
+  const h = hex.replace("#", "");
+  const bigint = parseInt(h, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
 function SkillGlobe() {
@@ -149,21 +156,50 @@ function SkillGlobe() {
             const z = r * Math.cos(phiRand);
             return (
               <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "none" }}>
-                <span
-                  className={`min-w-[90px] px-4 py-1.5 rounded-lg font-bold shadow border text-base antialiased flex items-center justify-center text-center ${getColorClass(
-                    i,
-                    skill
-                  )}`}
-                  style={{
-                    fontSize: 16,
-                    userSelect: "none",
-                    fontFamily:
-                      'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
-                    WebkitFontSmoothing: "antialiased",
-                    MozOsxFontSmoothing: "grayscale"
-                  }}>
-                  {skill}
-                </span>
+                {/* Modern glassy pill with stronger color/contrast */}
+                {(() => {
+                  const color = pickColor(i, skill);
+                  const overlay = hexToRgba(color, 0.18); // stronger tint
+                  return (
+                    <span
+                      className={`min-w-[92px] px-3 py-1.5 rounded-full font-semibold text-sm antialiased flex items-center justify-center text-center gap-2 transform-gpu transition-all duration-300`}
+                      style={{
+                        userSelect: "none",
+                        fontFamily:
+                          'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif',
+                        WebkitFontSmoothing: "antialiased",
+                        MozOsxFontSmoothing: "grayscale",
+                        // colored text (uses skill color) with contrast-preserving shadows
+                        color: color,
+                        textShadow: `0 1px 0 rgba(255,255,255,0.85), 0 2px 8px ${hexToRgba("#000000", 0.32)}`,
+                        // base glass look
+                        background: `linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.008))`,
+                        // heavier colored border for stronger definition
+                        border: `2px solid ${hexToRgba(color, 0.3)}`,
+                        // more prominent colored radial overlay
+                        backgroundImage: `radial-gradient(100% 60% at 10% 20%, ${overlay}, transparent 35%)`,
+                        // stronger colored glow and depth
+                        boxShadow: `0 10px 28px ${hexToRgba(color, 0.16)}, inset 0 1px 0 rgba(255,255,255,0.02)`,
+                        backdropFilter: "saturate(140%) blur(6px)",
+                        // colored outline via drop-shadow
+                        filter: `drop-shadow(0 3px 10px ${hexToRgba(color, 0.1)})`
+                      }}>
+                      {/* colored accent dot */}
+                      <span
+                        aria-hidden
+                        style={{
+                          width: 9,
+                          height: 9,
+                          borderRadius: 9999,
+                          background: color,
+                          border: `2px solid rgba(255,255,255,0.10)`,
+                          boxShadow: `0 3px 8px ${hexToRgba(color, 0.3)}`
+                        }}
+                      />
+                      <span style={{ lineHeight: 1 }}>{skill}</span>
+                    </span>
+                  );
+                })()}
               </Html>
             );
           })}
