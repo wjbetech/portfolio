@@ -4,7 +4,7 @@ import { FaLinkedin, FaGithub, FaInstagram, FaXTwitter } from "react-icons/fa6";
 
 const Contact: React.FC = () => (
   <motion.section
-    className="w-full h-screen flex flex-col items-center justify-center bg-base-100 overflow-x-hidden max-w-[90%] mx-auto"
+    className="w-full min-h-screen flex flex-col items-center justify-center bg-base-100 overflow-x-hidden"
     initial={{ opacity: 0, y: 32 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.7, ease: "easeOut" }}>

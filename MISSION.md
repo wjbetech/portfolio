@@ -123,3 +123,22 @@ To build a truly personal, unique, and retro-themed portfolio website that is bo
 4. Hook up the Contact component so that it actually works
 5. Add a language toggle between English (en) and Korean (ko)
 6. Get cat animations working properly
+
+## Prioritized Next Tasks
+
+1. Convert `Contact` from `h-screen` to `min-h-screen` (completed)
+   - Prevent stacked full-height sections and avoid unexpected extra scrollbars.
+2. Add keyboard navigation to the Projects bar (Arrow keys, Home/End)
+   - Improve accessibility and expected tab behavior for keyboard users.
+3. Enable safe hover/focus interactions for SkillGlobe pills
+   - Add scale/glow on hover/focus while preserving globe drag (stopPropagation).
+4. Tweak `Hero` forced height (`lg:h-screen` → `lg:min-h-screen` or remove)
+   - Keep hero visually full without forcing exact viewport height on all devices.
+5. Globe performance improvements
+   - Lower geometry, pause render when offscreen, or throttle updates on mobile.
+6. Small polish & accessibility improvements
+   - Visible focus styles, aria-live for dynamic content, skip links, and other a11y fixes.
+
+Status:
+
+- Task 1 (Convert `Contact` → `min-h-screen`) completed.
