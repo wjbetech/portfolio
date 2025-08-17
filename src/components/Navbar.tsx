@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from "react-icons/fa";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   return (
-    <nav className="navbar bg-content text-secondary-content px-4 w-full fixed top-0 left-0 z-50">
+    <nav className="navbar bg-base-100 text-secondary-content px-4 w-full fixed top-0 left-0 z-60 shadow-sm">
       <div className="flex-1">
         <a className="btn btn-ghost text-2xl tracking-widest" id="title" href="#home">
           wjbetech
@@ -36,7 +36,7 @@ export default function Navbar() {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-sm dropdown-content mt-1 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-sm dropdown-content mt-1 z-70 p-2 shadow bg-base-100 rounded-box w-52"
             onClick={() => setMenuOpen(false)}>
             <li>
               <a href="#about">About</a>

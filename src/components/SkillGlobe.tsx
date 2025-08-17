@@ -1,21 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Group } from "three";
+import { Group, CanvasTexture } from "three";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 
-const skills = [
-  "TypeScript",
-  "Three.js",
-  "Tailwind",
-  "DaisyUI",
-  "Node.js",
-  "GitHub",
-  "Next.js",
-  "Figma",
-  "PostgreSQL",
-  "Express"
-];
+const skills = ["TypeScript", "Three.js", "Tailwind", "Node.js", "GitHub", "Next.js", "Figma", "PostgreSQL", "Express"];
 
 function RotatingGlobe({ children, paused }: { children: React.ReactNode; paused: boolean }) {
   const ref = useRef<Group>(null);
@@ -67,6 +56,8 @@ function SkillGlobe() {
   const [docVisible, setDocVisible] = useState(true);
   const [dprMax, setDprMax] = useState(1.5);
   const [lowPower, setLowPower] = useState(false);
+  const [veryLowPower, setVeryLowPower] = useState(false);
+  const [midPower, setMidPower] = useState(false);
 
   // Generate random offsets for each skill on every mount, avoiding overlap
   const minDistance = 0.25; // minimum allowed distance between nodes (in radians)
@@ -105,14 +96,22 @@ function SkillGlobe() {
       setDprMax(Math.min(window.devicePixelRatio, 1.5));
     }
 
-    // Lightweight low-power detection: narrow screens or low core counts
+    // Lightweight low-power detection: narrow screens, low core counts, or very high DPR
     if (typeof window !== "undefined") {
-      const isNarrow = window.innerWidth < 480;
+      const width = window.innerWidth;
+      const isNarrow = width < 480;
+      const isVeryNarrow = width < 360;
       const nav =
         typeof navigator !== "undefined" ? (navigator as Navigator & { hardwareConcurrency?: number }) : undefined;
-      const lowCores = !!(nav && typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 2);
+      const hw = nav && typeof nav.hardwareConcurrency === "number" ? nav.hardwareConcurrency : undefined;
+      const lowCores = !!(hw && hw <= 2);
+      const veryLowCores = !!(hw && hw <= 1);
       const highDpr = (window.devicePixelRatio || 1) > 1.4;
       setLowPower(isNarrow || lowCores || highDpr);
+      setVeryLowPower(isVeryNarrow || veryLowCores);
+      // midPower when device is moderately capable: >2 cores or medium width
+      const isMid = !isNarrow && !isVeryNarrow && !!(hw && hw > 2);
+      setMidPower(isMid);
     }
 
     const el = containerRef.current;
@@ -141,8 +140,112 @@ function SkillGlobe() {
   const paused = !inView || !docVisible;
 
   // choose a simplified skill set and geometry for low-power devices
-  const skillsToShow = lowPower ? skills.slice(0, Math.max(6, Math.floor(skills.length / 2))) : skills;
-  const geomSegments = lowPower ? 8 : 16;
+  const skillsToShow = veryLowPower
+    ? skills.slice(0, Math.max(4, Math.floor(skills.length / 3)))
+    : lowPower
+    ? skills.slice(0, Math.max(6, Math.floor(skills.length / 2)))
+    : skills;
+  const geomSegments = veryLowPower ? 6 : lowPower ? 8 : 16;
+
+  // helper: create a canvas texture for a pill-styled label
+  const createLabelTexture = (text: string, color: string) => {
+    if (typeof document === "undefined") return null;
+    const padding = 12;
+    const fontSize = 32; // base; scaled via sprite size
+    const font = `${fontSize}px system-ui, -apple-system, 'Segoe UI', Roboto, Arial`;
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    // measure text
+    ctx.font = font;
+    const textMetrics = ctx.measureText(text);
+    const textWidth = Math.ceil(textMetrics.width);
+    const width = textWidth + padding * 2;
+    const height = fontSize + padding;
+    canvas.width = Math.max(64, width);
+    canvas.height = Math.max(32, height);
+
+    // high-DPR support
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    if (dpr !== 1) {
+      canvas.width *= dpr;
+      canvas.height *= dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    // draw pill background
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.beginPath();
+    const radius = 20;
+    const w = width;
+    const h = height;
+    // rounded rect
+    ctx.fillStyle = "rgba(255,255,255,0.04)";
+    ctx.strokeStyle = hexToRgba(color, 0.28);
+    ctx.lineWidth = 2;
+    ctx.moveTo(radius, 0);
+    ctx.arcTo(w, 0, w, h, radius);
+    ctx.arcTo(w, h, 0, h, radius);
+    ctx.arcTo(0, h, 0, 0, radius);
+    ctx.arcTo(0, 0, w, 0, radius);
+    ctx.fill();
+    ctx.stroke();
+
+    // draw colored dot
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(12 + 6, h / 2, 6, 0, Math.PI * 2);
+    ctx.fill();
+
+    // draw text
+    ctx.fillStyle = color;
+    ctx.font = font;
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, 12 + 12, h / 2);
+
+    const texture = new CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return { texture, width: w, height: h };
+  };
+
+  // Decide which skills will use sprite textures (to reduce DOM/Html usage)
+  const spriteSkills = React.useMemo(() => {
+    if (veryLowPower || lowPower) return skillsToShow;
+    if (midPower) {
+      // use sprites for every other skill to halve Html nodes
+      return skillsToShow.filter((_, idx) => idx % 2 === 0);
+    }
+    return [] as string[];
+  }, [veryLowPower, lowPower, midPower, skillsToShow]);
+
+  // Cache label textures for chosen sprite labels to avoid recreating canvases each frame
+  const labelTextures = React.useMemo(() => {
+    if (spriteSkills.length === 0)
+      return {} as Record<string, { texture: CanvasTexture; width: number; height: number }>;
+
+    const map: Record<string, { texture: CanvasTexture; width: number; height: number }> = {};
+    for (const skill of spriteSkills) {
+      const color = pickColor(skills.indexOf(skill), skill);
+      const res = createLabelTexture(skill, color) as { texture: CanvasTexture; width: number; height: number } | null;
+      if (res && res.texture) {
+        map[skill] = res as { texture: CanvasTexture; width: number; height: number };
+      }
+    }
+    return map;
+  }, [spriteSkills]);
+
+  // Dispose textures when they change/unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      try {
+        Object.values(labelTextures).forEach((l) => {
+          if (l?.texture && typeof l.texture.dispose === "function") l.texture.dispose();
+        });
+      } catch {
+        // ignore disposal errors in older browsers
+      }
+    };
+  }, [labelTextures]);
 
   return (
     <motion.div
@@ -219,6 +322,27 @@ function SkillGlobe() {
             const z = r * Math.cos(phiRand);
             const color = pickColor(originalIndex, skill);
             const overlay = hexToRgba(color, 0.18);
+            // use low-cost sprites on low-power devices; Html otherwise
+            if (lowPower) {
+              const label = labelTextures[skill] ?? createLabelTexture(skill, color);
+              // fallback to Html if texture couldn't be created
+              if (!label) {
+                return (
+                  <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "auto" }}>
+                    <span style={{ padding: 8, background: "rgba(255,255,255,0.04)", borderRadius: 999 }}>{skill}</span>
+                  </Html>
+                );
+              }
+              // sprite size scaled down for 3D world; convert px -> world units
+              const scaleFactor = veryLowPower ? 0.28 : 0.4; // smaller on very low-power
+              const spriteW = (label.width / 100) * scaleFactor;
+              const spriteH = (label.height / 100) * scaleFactor;
+              return (
+                <sprite key={skill} position={[x, y, z]} scale={[spriteW, spriteH, 1]}>
+                  <spriteMaterial attach="material" map={label.texture} depthTest={true} transparent={true} />
+                </sprite>
+              );
+            }
             return (
               <Html key={skill} position={[x, y, z]} center style={{ pointerEvents: "auto" }}>
                 <span
